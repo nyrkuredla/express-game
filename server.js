@@ -5,6 +5,7 @@ const mustacheExpress = require('mustache-express')
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const routes = require('./routes/routes')
+const validator = require('express-validator')
 
 //setting up mustache stuff
 app.engine('mustache', mustacheExpress())
@@ -18,6 +19,9 @@ app.use(express.static('public'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
+//validator middleware
+app.use(validator())
+
 //middleware for secrets. sssssshhhhhh
 app.use(session({
   secret: 'so secret', //encrypts a secret hash; this secret is the only thing that can unencrypt it. Usually not saved in the file like this, for security reasons; we can use process.env to save it otherwise
@@ -26,7 +30,7 @@ app.use(session({
   cookie: { maxAge:null }
 }))
 
-//middleware to check if a user is logged in: if so, then authentication is true which allows admin privileges
+//middleware to check if a user has begin a game session
 app.use(function (req, res, next) {
   if (req.session.usr) {
     req.isAuthenticated = true;
@@ -34,6 +38,7 @@ app.use(function (req, res, next) {
   else {
     req.isAuthenticated = false;
   }
+  console.log(req.isAuthenticated, 'session')
   next();
 })
 
