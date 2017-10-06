@@ -21,15 +21,14 @@ function getRandomWord (words) {
   return word;
 }
 
-function getWordArray(randomWord) {
-  randomWord = getRandomWord();
+function getWordArray(word) {
   let wordArray = [];
-  wordArray = randomWord.split('');
+  wordArray = word.split('');
   return wordArray;
 }
 
-function getLettersObj(arr) {
-  arr = getWordArray();
+function getLettersObj(word) {
+  arr = getWordArray(word);
   let letterObj = {};
   let lettersArr = [];
   for (let i = 0; i < arr.length; i++) {
@@ -43,15 +42,16 @@ function getLettersObj(arr) {
   return lettersArr;
 }
 
-function guessLetter (letter) {
-  let chosenLetter = letter;
-  let lettersArr = letters;
-  for (let i = 0; i < lettersArr.length; i++) {
-    if (lettersArr[i].letter == chosenLetter) {
-      lettersArr[i].guessed = true;
-    };
-  }
-  return lettersArr;
+function guessLetter (guess, letters) {
+  let compArr = letters;
+  let guessCorrect = false;
+  compArr.forEach(function(lett) {
+    if (lett.letter === guess) {
+      lett.guessed = true
+      guessCorrect = true;
+    }
+  })
+  return (compArr);
 }
 
 module.exports = {
@@ -60,5 +60,6 @@ module.exports = {
   getRandomIndex: getRandomIndex,
   getRandomWord: getRandomWord,
   getWordArray: getWordArray,
-  getLettersObj: getLettersObj
+  getLettersObj: getLettersObj,
+  guessLetter: guessLetter
 }

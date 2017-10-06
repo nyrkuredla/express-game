@@ -22,8 +22,11 @@ app.use(bodyParser.urlencoded({ extended: false }))
 //validator middleware
 app.use(validator())
 
-//middleware for secrets. sssssshhhhhh
+//middleware for sesh. sssssshhhhhh
 app.use(session({
+  guessCount: 8,
+  word: "",
+  wordArr: [],
   secret: 'so secret', //encrypts a secret hash; this secret is the only thing that can unencrypt it. Usually not saved in the file like this, for security reasons; we can use process.env to save it otherwise
   resave: false, //doesn't resave it every time
   saveUninitialized: true, //if you don't have a session, it will create one, even if you are anonymous
@@ -38,7 +41,6 @@ app.use(function (req, res, next) {
   else {
     req.isAuthenticated = false;
   }
-  console.log(req.isAuthenticated, 'session')
   next();
 })
 

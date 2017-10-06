@@ -2,11 +2,14 @@
 <html>
   {{>_head}}
   <body>
-    <div class="container">
-      <div id="word">
-        {{#word}}
+    <div class="container col-md-12">
+      <div id="word row">
+        {{#wordArr}}
           {{>_letter}}
-        {{/word}}
+        {{/wordArr}}
+        {{^wordArr}}
+          <p>No word here; why don't you check that code again, champ?</p>
+        {{/wordArr}}
       </div>
       <form class="letterForm inline" action="/game" method="post">
         <label for="letter">Guess a letter!</label>

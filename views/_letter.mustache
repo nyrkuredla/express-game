@@ -1,8 +1,8 @@
-<div class="letter">
-  {{#true}}
+<div class="letter col-md-1">
+  {{#guessed}}
     {{letter}}
-  {{/true}}
-  {{^true}}
+  {{/guessed}}
+  {{^guessed}}
     {{placeholder}}
-  {{/true}}
+  {{/guessed}}
 </div>
