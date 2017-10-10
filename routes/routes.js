@@ -7,6 +7,7 @@ const fs = require('fs')
 const bodyParser = require('body-parser')
 const validator = require('express-validator')
 
+
 //TO DO: I have the session working to store the word and word array. need to write function to check the chosen letter against the word array and reveal the letter if true; also need to include a guess counter in state (done) and write a function to return a lose alert and reset the session/log the user out on the last count (8? check the docs).
 
 router
@@ -35,6 +36,7 @@ router
     wordArr = dal.getLettersObj(word)
     session.word = word
     session.wordArr = wordArr
+    session.guessCount = 8;
     res.redirect('/game')
   })
 
@@ -48,26 +50,31 @@ router
   router
     .route('/game')
     .get(function (req, res) {
+      console.log('req', req.session.guessCount)
       const wordArr = req.session.wordArr;
-      res.render('game', {wordArr: wordArr})
+      res.render('game', {wordArr: wordArr, guesses: req.session.guessCount})
     })
     .post(function (req, res) {
+      if (req.session.guessCount <= 1) {
+        console.log('boooooo')
+        res.redirect('/loser')
+      }
       const guess = req.body.letter;
       let wordArr = req.session.wordArr;
-      let guessCount = req.session.guessCount;
-      let compArr = dal.guessLetter(guess, wordArr);
+      console.log(wordArr)
+      let compArr = dal.guessLetter(guess, wordArr, req.session.guessCount);
       if (compArr === wordArr) {
         wordArr = compArr;
-        console.log('you got it right!', wordArr)
-        res.render('game', {wordArr: wordArr})
-      }
-      else {
-        guessCount -= 1;
-        console.log("crap, you got it wrong. you have ", guessCount, " guesses left.")
-        res.render('game', {wordArr: wordArr})
+        console.log('woo', req.session.guessCount)
+        res.redirect('/game')
       }
     }
-
     )
+
+    router
+      .route('/loser')
+      .get(function (req, res) {
+        res.render('loser')
+      })
 
 module.exports = router

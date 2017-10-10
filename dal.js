@@ -42,16 +42,25 @@ function getLettersObj(word) {
   return lettersArr;
 }
 
-function guessLetter (guess, letters) {
+function guessCorrect (correct, guesses) {
+  console.log('guesscorrect', guesses)
+  if (correct === false) {
+    guesses -= 1
+  }
+  return guesses;
+}
+
+function guessLetter (guess, letters, guessCount) {
   let compArr = letters;
-  let guessCorrect = false;
+  let correct = false;
   compArr.forEach(function(lett) {
     if (lett.letter === guess) {
-      lett.guessed = true
-      guessCorrect = true;
+      lett.guessed = true;
+      correct = true;
     }
   })
-  return (compArr);
+  guessCorrect(correct, guessCount)
+  return compArr;
 }
 
 module.exports = {
