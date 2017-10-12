@@ -42,25 +42,29 @@ function getLettersObj(word) {
   return lettersArr;
 }
 
-function guessCorrect (correct, guesses) {
-  console.log('guesscorrect', guesses)
-  if (correct === false) {
-    guesses -= 1
-  }
+function guessCorrect (guesses) {
+  guesses += 1;
   return guesses;
 }
 
 function guessLetter (guess, letters, guessCount) {
   let compArr = letters;
   let correct = false;
+  let guessArr = [];
+  let count = guessCount;
   compArr.forEach(function(lett) {
     if (lett.letter === guess) {
       lett.guessed = true;
       correct = true;
     }
   })
-  guessCorrect(correct, guessCount)
-  return compArr;
+  if(!correct) {
+    guessArr.push(guess[0]);
+    count -= 1;
+    //if false, add letter to array of incorrect guesses and subtract one from the guesscount.
+  }
+  //return object with new guess count, array of letters, and letters guessed and pick apart to set new state.
+  return {compArr, guessArr, count};
 }
 
 module.exports = {

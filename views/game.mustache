@@ -10,6 +10,9 @@
         {{^wordArr}}
           <p>No word here; why don't you check that code again, champ?</p>
         {{/wordArr}}
+        {{#letters}}
+          <p>Letters guessed: {{letters}}</p>
+        {{/letters}}
       </div>
       <form class="letterForm inline" action="/game" method="post">
         <label for="letter">Guess a letter!</label>
